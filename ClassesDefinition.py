@@ -24,6 +24,17 @@ class LotoCard:
             self.bingoballs.append(number)
             return True if len(self.bingoballs) >= MaxNumInLotoCard else False
 
+    def LotoCardPrn(self, title):
+        #def cardprint(numlist, allnums, title):
+         print(title.center(36, '='))
+         for row in range(len(self.numbers)):
+            for col in range(len(self.numbers[row])):
+                if self.numbers[row][col] == 0:
+                    print('    ', end='')
+                else:
+                    print(' -- ' if (self.numbers[row][col] in self.bingoballs) else f'{self.numbers[row][col]:2d} ', end='')
+            print('')
+         print('=' * 36)
 """
 Описание класса МЕШОК (1..90)
 """
