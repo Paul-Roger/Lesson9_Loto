@@ -69,6 +69,8 @@ class LotoCard:
         if self.exist(number):
             self.bingoballs.append(number)
             return 1 if len(self.bingoballs) >= MaxNumInLotoCard else 0
+        else:
+            return 0
 
     def lotocardprn(self):
          print(self.ownername.center(36, '='))
