@@ -18,7 +18,7 @@ class LotoCard:
     def fillcard(self):
         for i in range(15):
             rndint = random.randint(1, 90)
-            while self.exist(rndint): #check if number is already in this card
+            while rndint in self: #check if number is already in this card
                 rndint = random.randint(1, 90)
             # calc best column
             free_col = -1
@@ -59,20 +59,21 @@ class LotoCard:
         self.ownername = ownername
         self.bingoballs = []
 
-    def exist(self, number):
+    def __contains__(self, number):
         result = False
         for i in range(len(self.numbers)):
             result = result or (number in self.numbers[i])
         return result
 
     def crossout(self, number):
-        if self.exist(number):
+        if number in self and number > 0: #if self.exist(number)
             self.bingoballs.append(number)
             return 1 if len(self.bingoballs) >= MaxNumInLotoCard else 0
         else:
             return 0
 
     def lotocardprn(self):
+         print('')
          print(self.ownername.center(36, '='))
          for row in range(len(self.numbers)):
             for col in range(len(self.numbers[row])):
@@ -91,11 +92,19 @@ class LotoBag:
         self.balls = [num for num in range(1,91)]
         self.selected = []
 
+    def __sub__(self, other):
+        if isinstance(other, int):
+            self.balls.remove(other)
+        return self
+
+    def __len__(self):
+        return len(self.balls)
+
     def nextball(self):
         if not self.balls:
             return 0
-        newball = self.balls[random.randint(0, len(self.balls)-1)]
-        self.balls.remove(newball)
+        newball = self.balls[random.randint(0, len(self)-1)]
+        self-=newball
         self.selected.append(newball)
         return newball
 
@@ -113,8 +122,7 @@ class LotoPlayer:
     def checkball(self, ball):
         if self.human:
             choice = input("Игрок " + self.name + ", вычеркиваем число (y/n)? ")
-            num_exists = self.lotocard.exist(ball)
-            if (num_exists and (choice == 'n' or choice == 'N')) or (not num_exists and (choice == 'y' or choice == 'Y')):
+            if (ball in self.lotocard and (choice == 'n' or choice == 'N')) or (ball not in self.lotocard and (choice == 'y' or choice == 'Y')):
                 self.active = False
                 #print("Checkball: Игрок " + self.name + " ошибся и выбывает из игры!")
                 return -1

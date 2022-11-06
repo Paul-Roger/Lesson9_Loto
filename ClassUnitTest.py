@@ -37,12 +37,18 @@ class TestLotoCard(unittest.TestCase):
         self.assertEqual(numcount, 15)
         self.assertFalse(is_double)
 
+    def test_contain(self):
+        self.assertFalse(100 in self.lottocard)
+
     def test_crossout(self):
-        for i in range(MaxNumInLotoCard-2):
-           self.assertEqual(self.lottocard.crossout(i), 0)
+        for i in range(90):
+            self.assertEqual(self.lottocard.crossout(i), 0)
+            if len(self.lottocard.bingoballs) >=14:
+                break
         self.lottocard.lotocardprn()
         print(self.lottocard.bingoballs)
-#        self.assertEqual(self.lottocard.crossout(i), 1)
+        #self.assertEqual(self.lottocard.crossout(i), 1)
+
 
 #====================================================================================================================
 #====================================================================================================================
@@ -59,12 +65,22 @@ class TestLotoBag(unittest.TestCase):
         self.assertEqual(len(self.lottobag.balls), 90)
         self.assertListEqual(self.lottobag.selected, [])
 
+    def test_Len(self):
+        self.assertEqual(len(self.lottobag), 90)
+
     def test_nextball(self):
         for i in range(90):
             self.assertGreater(self.lottobag.nextball(), 0)
             self.assertEqual(len(self.lottobag.balls), 89 - i)
             self.assertEqual(len(self.lottobag.selected), i + 1)
         self.assertEqual(self.lottobag.nextball(), 0)
+
+    def test_sub(self):
+        self.lottobag2 = LotoBag()
+        self.lottobag2 -= 13
+        self.assertFalse(13 in self.lottobag2.balls)
+        self.assertTrue(12 in self.lottobag2.balls)
+
 
 #====================================================================================================================
 #====================================================================================================================
