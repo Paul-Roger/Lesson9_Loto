@@ -54,4 +54,4 @@ while nextball:
             break
         player.lotocard.lotocardprn()
 
-print("Игра завершена. До новыз встреч!")
+print("Игра завершена. До новых встреч!")
